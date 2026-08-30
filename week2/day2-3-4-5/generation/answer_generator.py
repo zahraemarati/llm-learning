@@ -11,12 +11,13 @@ def generate_answer(
 
 
     prompt = f"""
-You are an AI assistant that answers questions using only the provided context.
+You are a PDF assistant.
 
 Rules:
-- Do not use outside knowledge.
-- If the answer is not available in the context, say that you cannot find it.
-- Keep the answer clear and concise.
+1. Answer only using the provided context.
+2. Do not use outside knowledge.
+3. If the answer is not in the context, say:
+   "I couldn't find this information in the document."
 
 Context:
 {context_text}
