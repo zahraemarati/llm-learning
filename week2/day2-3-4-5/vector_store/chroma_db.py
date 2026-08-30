@@ -1,6 +1,9 @@
 import chromadb
+
 from embeddings.embedder import get_embedding
+from document_loader.pdf_loader import load_pdf
 from document_loader.splitter.chunker import get_chunks
+
 
 client = chromadb.PersistentClient(
     path="./chroma_db"
@@ -12,13 +15,19 @@ collection = client.get_or_create_collection(
 )
 
 
-def create_vector_store():
+def create_vector_store(pdf_path: str):
+
+    documents = load_pdf(pdf_path)
+
+    chunks = get_chunks(documents)
+
 
     for index, chunk in enumerate(chunks):
 
         text = chunk.page_content
 
         embedding = get_embedding(text)
+
 
         collection.add(
             ids=[
@@ -39,17 +48,7 @@ def create_vector_store():
         )
 
 
-    print(
-        f"{len(chunks)} chunks stored successfully"
-    )
-
-chunks = get_chunks()
-
-for index, chunk in enumerate(chunks):
-
-    print(f"Processing {index+1}/{len(chunks)}")
-
-    text = chunk.page_content
-
-if __name__ == "__main__":
-    create_vector_store()
+    return {
+        "message": "PDF processed successfully",
+        "chunks": len(chunks)
+    }
