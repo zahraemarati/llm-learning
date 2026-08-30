@@ -1,5 +1,14 @@
 venv/
+
 __pycache__/
-chroma_db/
+*.pyc
+
 .env
+
+chroma_db/
+
+uploads/
+
 *.pdf
+
+.DS_Store
