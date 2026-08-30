@@ -1,5 +1,10 @@
 # PDF Chat Assistant
 
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
+![LangChain](https://img.shields.io/badge/LangChain-RAG-orange)
+![ChromaDB](https://img.shields.io/badge/VectorDB-ChromaDB-purple)
+
 A Retrieval-Augmented Generation (RAG) based application that allows users to interact with PDF documents using natural language.
 
 The system processes PDF files, converts document content into semantic embeddings, stores them in a vector database, retrieves relevant information, and generates grounded answers using an LLM.
