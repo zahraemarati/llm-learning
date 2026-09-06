@@ -1,6 +1,6 @@
 from typing import Any
 
-from retrieval.retriever import retrieve
+from retrieval.hybrid_retriever import hybrid_retrieve
 from context.context_manager import manage_context
 from generation.answer_generator import generate_answer
 
@@ -9,10 +9,9 @@ def ask_question(
     question: str,
     where: dict[str, Any] | None = None,
 ):
-    retrieved_chunks = retrieve(
+    retrieved_chunks = hybrid_retrieve(
         question,
-        n_results=10,
-        where=where
+        n_results=10
     )
 
     context = manage_context(

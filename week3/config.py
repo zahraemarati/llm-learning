@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -9,9 +9,13 @@ class Settings(BaseSettings):
     chat_model: str = "glm-5.3-flash"
     embed_model: str = "nvidia/nemotron-3-embed-1b:free"
 
+    chroma_path: str = "./chroma_db"
+    collection_name: str = "pdf_documents"
 
-    class Config:
-        env_file = ".env"
+
+    model_config = SettingsConfigDict(
+        env_file=".env"
+    )
 
 
 settings = Settings()
