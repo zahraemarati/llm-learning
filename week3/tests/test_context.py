@@ -19,7 +19,7 @@
 
 # print(context)
 
-from retrieval.retriever import retrieve
+from retrieval.vector_retriever import retrieve
 from context.context_manager import manage_context
 
 

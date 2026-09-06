@@ -3,49 +3,51 @@ import chromadb
 
 from config import settings
 
-
-client = chromadb.PersistentClient(
-    path=settings.chroma_path
-)
-
-
-def get_all_documents():
-
-    collection = client.get_collection(
-        name=settings.collection_name
-    )
-
-    results = collection.get()
-
-    documents = results["documents"]
-    metadatas = results["metadatas"]
-
-    return [
-        {
-            "text": doc,
-            "metadata": metadata,
-        }
-        for doc, metadata in zip(
-            documents,
-            metadatas,
-        )
-    ]
-
-
 class BM25Retriever:
+
 
     def __init__(self):
 
-        self.documents = get_all_documents()
+        self.client = chromadb.PersistentClient(
+            path=settings.chroma_path
+        )
+
+
+        self.collection = self.client.get_collection(
+            name=settings.collection_name
+        )
+
+
+        self.documents = self._load_documents()
+
 
         tokenized_docs = [
             doc["text"].split()
             for doc in self.documents
         ]
 
+
         self.bm25 = BM25Okapi(
             tokenized_docs
         )
+
+
+    def _load_documents(self):
+
+        results = self.collection.get()
+
+
+        return [
+            {
+                "text": doc,
+                "metadata": metadata
+            }
+            for doc, metadata in zip(
+                results["documents"],
+                results["metadatas"]
+            )
+        ]
+
 
 
     def retrieve(
@@ -54,14 +56,12 @@ class BM25Retriever:
         k: int = 5
     ):
 
-        tokenized_query = query.split()
-
         scores = self.bm25.get_scores(
-            tokenized_query
+            query.split()
         )
 
 
-        ranked = sorted(
+        ranked_indexes = sorted(
             range(len(scores)),
             key=lambda i: scores[i],
             reverse=True
@@ -70,13 +70,14 @@ class BM25Retriever:
 
         results = []
 
-        for index in ranked[:k]:
+
+        for index in ranked_indexes[:k]:
 
             results.append(
                 {
                     "text": self.documents[index]["text"],
                     "metadata": self.documents[index]["metadata"],
-                    "score": scores[index],
+                    "score": scores[index]
                 }
             )
 

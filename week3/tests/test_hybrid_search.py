@@ -1,23 +1,29 @@
-from retrieval.hybrid_retriever import hybrid_retrieve
+from retrieval.hybrid_retriever import HybridRetriever
+
+
+retriever = HybridRetriever()
 
 
 def test_hybrid_search():
 
-    results = hybrid_retrieve(
+    results = retriever.retrieve(
         "artificial intelligence"
     )
 
     assert len(results) > 0
 
+
     for r in results:
         print(
             r["metadata"],
+            r["score"],
             r["text"][:100]
         )
 
+
 def test_bm25_keyword():
 
-    results = hybrid_retrieve(
+    results = retriever.retrieve(
         "PyTorch"
     )
 
@@ -25,6 +31,7 @@ def test_bm25_keyword():
         r["text"]
         for r in results
     ]
+
 
     assert any(
         "PyTorch" in text

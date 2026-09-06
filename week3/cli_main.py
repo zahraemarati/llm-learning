@@ -1,4 +1,4 @@
-from retrieval.retriever import retrieve
+from retrieval.vector_retriever import retrieve
 from generation.answer_generator import generate_answer
 
 

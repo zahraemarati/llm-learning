@@ -1,43 +1,97 @@
-from retrieval.retriever import retrieve
+from retrieval.vector_retriever import VectorRetriever
 from retrieval.bm25_retriever import BM25Retriever
 
 
-bm25 = BM25Retriever()
+
+class HybridRetriever:
 
 
-def hybrid_retrieve(
-    query: str,
-    n_results: int = 5
-):
+    def __init__(self):
 
-    semantic_results = retrieve(
-        query,
-        n_results=n_results
-    )
+        self.vector_retriever = VectorRetriever()
+
+        self.bm25_retriever = BM25Retriever()
 
 
-    keyword_results = bm25.retrieve(
-        query,
-        k=n_results
-    )
 
-
-    merged = []
-
-    seen = set()
-
-
-    for item in (
-        semantic_results +
-        keyword_results
+    def retrieve(
+        self,
+        query: str,
+        n_results: int = 5
     ):
 
-        text = item["text"]
 
-        if text not in seen:
+        semantic_results = (
+            self.vector_retriever.retrieve(
+                query,
+                n_results=n_results
+            )
+        )
 
-            merged.append(item)
-            seen.add(text)
+
+        keyword_results = (
+            self.bm25_retriever.retrieve(
+                query,
+                k=n_results
+            )
+        )
 
 
-    return merged[:n_results]
+        combined = {}
+
+
+
+        # Semantic score weight
+        for doc in semantic_results:
+
+            text = doc["text"]
+
+            combined[text] = {
+                "text": text,
+                "metadata": doc["metadata"],
+                "score": (
+                    0.7 *
+                    doc["score"]
+                )
+            }
+
+
+
+        # BM25 score weight
+        for doc in keyword_results:
+
+            text = doc["text"]
+
+
+            bm25_score = doc["score"]
+
+
+            if text in combined:
+
+                combined[text]["score"] += (
+                    0.3 *
+                    bm25_score
+                )
+
+
+            else:
+
+                combined[text] = {
+                    "text": text,
+                    "metadata": doc["metadata"],
+                    "score": (
+                        0.3 *
+                        bm25_score
+                    )
+                }
+
+
+
+        ranked_results = sorted(
+            combined.values(),
+            key=lambda x: x["score"],
+            reverse=True
+        )
+
+
+        return ranked_results[:n_results]

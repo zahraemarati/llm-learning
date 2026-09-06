@@ -1,4 +1,4 @@
-from retrieval.retriever import retrieve
+from retrieval.vector_retriever import retrieve
 
 
 question = "What is Artificial Intelligence?"
