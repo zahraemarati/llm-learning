@@ -3,6 +3,7 @@ import chromadb
 from config import settings
 from embeddings.embedder import get_embedding
 
+
 class VectorRetriever:
 
     def __init__(self):
@@ -49,7 +50,6 @@ class VectorRetriever:
             distances
         ):
 
-            # تبدیل distance به similarity score
             score = 1 - distance
 
 
@@ -57,9 +57,34 @@ class VectorRetriever:
                 {
                     "text": doc,
                     "metadata": metadata,
-                    "score": score
+                    "score": score,
+                    "distance": distance
                 }
             )
 
 
         return retrieved
+
+
+
+_default_retriever = None
+
+
+def retrieve(
+    query: str,
+    n_results: int = 5,
+    where=None
+):
+
+    global _default_retriever
+
+
+    if _default_retriever is None:
+        _default_retriever = VectorRetriever()
+
+
+    return _default_retriever.retrieve(
+        query,
+        n_results=n_results,
+        where=where
+    )
