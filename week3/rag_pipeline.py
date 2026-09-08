@@ -1,6 +1,8 @@
 from typing import Any
 
 from retrieval.hybrid_retriever import HybridRetriever
+from retrieval.reranker import Reranker
+
 from context.context_manager import manage_context
 from generation.answer_generator import generate_answer
 
@@ -9,14 +11,16 @@ from query.multi_query import MultiQueryGenerator
 
 
 retriever = HybridRetriever()
+reranker = Reranker()
 
 query_rewriter = QueryRewriter()
 multi_query_generator = MultiQueryGenerator()
 
 
-def ask_question(
+def retrieve_chunks(
     question: str,
-    where: dict[str, Any] | None = None,
+    candidate_count: int = 10,
+    top_k: int = 5,
 ):
 
     rewritten_query = query_rewriter.rewrite(
@@ -43,11 +47,10 @@ def ask_question(
 
         chunks = retriever.retrieve(
             query,
-            n_results=10
+            n_results=candidate_count
         )
 
         all_chunks.extend(chunks)
-
 
 
     unique_chunks = []
@@ -57,21 +60,42 @@ def ask_question(
 
     for chunk in all_chunks:
 
-        chunk_key = str(
-            chunk.get("page_content")
-            or chunk.get("content")
-            or chunk
-        )
+        chunk_key = chunk.get("text")
 
 
-        if chunk_key not in seen:
+        if chunk_key and chunk_key not in seen:
 
             unique_chunks.append(chunk)
+
             seen.add(chunk_key)
 
 
+    candidate_chunks = unique_chunks[
+        :candidate_count
+    ]
 
-    retrieved_chunks = unique_chunks[:10]
+
+    reranked_chunks = reranker.rerank(
+        question,
+        candidate_chunks,
+        top_k=top_k
+    )
+
+
+    return reranked_chunks
+
+
+
+def ask_question(
+    question: str,
+    where: dict[str, Any] | None = None,
+):
+
+    retrieved_chunks = retrieve_chunks(
+        question,
+        candidate_count=10,
+        top_k=5
+    )
 
 
     context = manage_context(
@@ -89,14 +113,17 @@ def ask_question(
     sources = []
 
 
-    for chunk in retrieved_chunks[:5]:
+    for chunk in retrieved_chunks:
 
         metadata = chunk.get(
             "metadata"
         )
 
         if metadata:
-            sources.append(metadata)
+
+            sources.append(
+                metadata
+            )
 
 
     return {

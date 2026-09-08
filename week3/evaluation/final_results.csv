@@ -1,0 +1,47 @@
+question,retrieved_correct,answer_correct,answer
+What is artificial intelligence?,Yes,Yes,"Based on the document, artificial intelligence was proposed by John McCarthy at the 1956 Dartmouth Conference. The definition outlined that **artificial intelligence is about letting a machine simulate the intelligent behavior of humans as precisely as it can be**.
+
+The document also notes that this definition seemingly ignores the possibility of **strong artificial intelligence**, which refers to a machine that has the ability or intelligence to solve problems by reasoning.
+
+Additionally, the chapter summary describes AI as an **interdisciplinary science**, whose application and development cannot be achieved without the support of other disciplines—its physical implementation relies on large-scale hardware, and its upper-layer applications rely on software design and implementation methods."
+What are the main technologies related to artificial intelligence?,Yes,Yes,"According to the document, AI technologies mainly include **three types of applicational technologies**:
+
+1. **Computer Vision** – a science that explores how to make computers ""see"" things. It is described as the most established technology among the three. Its main subjects include image classification, object detection, image segmentation, visual tracking, text recognition, and facial recognition. It is currently used in electronic attendance tracking, identity verification, image recognition, and image search.
+
+2. **Speech Processing** – mentioned as one of the three main applicational technologies (though the provided excerpt does not elaborate on it in detail).
+
+3. **Natural Language Processing (NLP)** – a technology aiming at interpreting and utilizing natural language through computer technologies. Its subjects include machine translation, text mining, and sentiment analysis. The document notes that NLP is not yet a very mature technology due to the high complexity of semantics.
+
+In addition, the document also mentions related supporting technologies, including:
+- **Machine learning and deep learning** (deep learning derives from the study of artificial neural networks and mimics mechanisms of the human brain in interpreting data like images, sound, and text)
+- Other important machine learning approaches such as **transfer learning, reinforcement learning, one-shot learning, and adversarial machine learning**
+- **Chip-level technologies**, such as algorithm optimization chips, neuromorphic chips, and programmable chips"
+What are common application fields of artificial intelligence?,No,Yes,"Based on the provided context, the document references that artificial intelligence covers multiple fields (as shown in ""Fig. 1.2 Fields covered by artificial intelligence""), but the specific list of fields depicted in that figure is not included in the provided text.
+
+The only concrete application scenario described in the context is:
+- **Face recognition technology** — used in a park AI engine for entrance control, accurately identifying visitors' identities and quickly returning results, which helps employees and property owners feel more at ease.
+
+I couldn't find this information in the document — specifically, a complete list of the common application fields of artificial intelligence is not detailed in the provided context."
+What controversies or concerns are associated with artificial intelligence?,Yes,Yes,"Based on the document, the following controversies and concerns associated with artificial intelligence are mentioned:
+
+**1. Privacy Leakage Risks**
+- The huge amount of user data collected by technology companies puts people at risk of ""full exposure of our daily life"" if these data are leaked.
+- When people are online, technology companies can technically record every click, every page scroll, viewing time spent on any content, and browsing history.
+- Companies can also know users' locations, where they have been, what they have done, and personal details such as education background, purchasing power, and preferences based on their records of rides and purchases.
+
+**2. The Contradiction Between Technology and Ethics**
+- With the development of computer vision, it is increasingly difficult to judge the credibility of images.
+- People can produce fake or manipulated images through image processors (e.g., Photoshop) and generative adversarial networks.
+
+The document notes that the chapter addresses ""the existing controversies over the topic"" of artificial intelligence, with these privacy and ethical concerns being the ones detailed in the provided context."
+What are the major development trends of artificial intelligence?,Yes,Yes,"According to the context, Huawei's global industry outlook report GIV 2020 (GIV 2025) lists **10 major development trends** of intelligent technologies in the future. Based on the provided document, the following trends are explicitly described:
+
+1. **Popularization of intelligent robots** — By 2025, 14% of families across the globe will own a smart robot, which will play an important role in people's daily life.
+
+2. **Popularization of AR/VR** — The percentage of companies using VR/AR technology will reach 10%, bringing vigor and opportunities to industries such as commercial presentation and audio-visual entertainment.
+
+3. **Application of AI in a wide range of fields** — 97% of large enterprises will adopt AI technology, exemplified by speech intelligence, image recognition, facial recognition, and human-computer interaction.
+
+4. **Popularization of big data applications** — (listed in the document, though details are cut off in the provided context)
+
+**Note:** The document mentions there are 10 major development trends in total, but only the first 4 are included in the provided context. The remaining 6 trends are not available in the document excerpt."
