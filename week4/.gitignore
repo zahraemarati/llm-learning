@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.log
+
+# Virtual environments
+.venv/
+venv/
+
+# Chroma database
+chroma_db/
+
+# Uploaded files
+uploads/
+
+# Pytest
+.pytest_cache/
+
+# Environment
+.env

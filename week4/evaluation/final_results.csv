@@ -1,0 +1,20 @@
+question,retrieved_correct,answer_correct,answer
+What is artificial intelligence?,Yes,Yes,"Based on the document, artificial intelligence was proposed by John McCarthy at the 1956 Dartmouth Conference, which outlined that **artificial intelligence is about letting a machine simulate the intelligent behavior of humans as precisely as it can be**.
+
+However, the document notes that this definition seemingly ignores the possibility of **strong artificial intelligence** (which means the machine that has the ability or intelligence to solve problems by reasoning).
+
+Additional context from the document includes:
+
+- **Relationship to related concepts**: Machine learning is an approach or subset of AI, and deep learning is one of ML's special forms. If AI is taken as the brain, machine learning is the process of acquiring cognitive abilities, and deep learning is a highly efficient self-training system. **Artificial intelligence is the target and result, while deep learning and machine learning are methods and tools.**
+
+- **Types of AI**: AI can be divided into two types — **strong artificial intelligence** (intelligent machines that can accomplish reasoning and problem-solving tasks, believed to have consciousness, self-awareness, and independent thinking) and **weak artificial intelligence**."
+What are the main technologies related to artificial intelligence?,Yes,Yes,"According to the document, AI technologies mainly include **three types of applicational technologies**:
+
+1. **Computer Vision** – A science that explores how to make computers ""see"" things. It is described as the most established technology among the three genres. Its main subjects include image classification, object detection, image segmentation, visual tracking, text recognition, and facial recognition.
+
+2. **Speech Processing** – Listed as one of the three main application technologies (details are cut off in the provided excerpt).
+
+3. **Natural Language Processing (NLP)** – A technology aiming at interpreting and utilizing natural language through computer technologies. Its subjects include machine translation, text mining, and sentiment analysis. The document notes that NLP is not yet a very mature technology due to the high complexity of semantics.
+
+Additionally, the document mentions that **machine learning** is an important sub-field of AI, and **deep learning** is a new sub-field of machine learning focused on mimicking the mechanisms of the human brain in interpreting data like images, sound, and text."
+What are common application fields of artificial intelligence?,No,Yes,I couldn't find this information in the document.
