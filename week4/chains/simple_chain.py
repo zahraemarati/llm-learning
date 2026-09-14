@@ -1,40 +1,33 @@
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 
-from prompts.basic_prompt import prompt
-
-from dotenv import load_dotenv
-import os
-
-
-load_dotenv()
+from prompts.research_prompt import research_prompt
+from config import settings
 
 
 model = ChatOpenAI(
-    model=os.getenv("CHAT_MODEL"),
-    api_key=os.getenv("BAI_API_KEY"),
+    model=settings.chat_model,
+    api_key=settings.bai_api_key,
     base_url="https://api.b.ai/v1",
-    temperature=0
+    temperature=0,
 )
 
 
 output_parser = StrOutputParser()
 
 
-chain = (
-    prompt
-    |
-    model
-    |
-    output_parser
+simple_chain = (
+    research_prompt
+    | model
+    | output_parser
 )
 
 
-response = chain.invoke(
-    {
-        "question": "Explain Hybrid Retrieval in RAG"
-    }
-)
+if __name__ == "__main__":
+    response = simple_chain.invoke(
+        {
+            "question": "What is Retrieval Augmented Generation?"
+        }
+    )
 
-
-print(response)
+    print(response)
