@@ -1,13 +1,23 @@
-from openai import OpenAI
+from langchain_openai import ChatOpenAI
+from langchain_openai import OpenAIEmbeddings
+
 from config import settings
 
 
-embedding_client = OpenAI(
+chat_client = ChatOpenAI(
+    model=settings.chat_model,
     api_key=settings.openrouter_api_key,
-    base_url="https://openrouter.ai/api/v1"
+    base_url="https://openrouter.ai/api/v1",
+    temperature=0,
 )
 
-chat_client = OpenAI(
-    api_key=settings.bai_api_key,
-    base_url="https://api.b.ai/v1"
+
+embedding_client = OpenAIEmbeddings(
+    model=settings.embed_model,
+    api_key=settings.openrouter_api_key,
+    base_url="https://openrouter.ai/api/v1",
 )
+
+
+# backward compatibility
+model = chat_client

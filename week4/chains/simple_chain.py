@@ -7,8 +7,8 @@ from config import settings
 
 model = ChatOpenAI(
     model=settings.chat_model,
-    api_key=settings.bai_api_key,
-    base_url="https://api.b.ai/v1",
+    api_key=settings.openrouter_api_key,
+    base_url="https://openrouter.ai/api/v1",
     temperature=0,
 )
 

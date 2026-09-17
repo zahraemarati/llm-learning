@@ -1,10 +1,24 @@
 from rag_pipeline import ask_question
 
 
-question = "What is Artificial Intelligence?"
+def test_rag_pipeline():
+
+    question = (
+        "What are the major development "
+        "trends of intelligent technologies?"
+    )
+
+    result = ask_question(
+        question
+    )
 
 
-answer = ask_question(question)
+    assert result is not None
 
+    assert "answer" in result
 
-print(answer)
+    assert "sources" in result
+
+    assert len(result["answer"]) > 0
+
+    assert len(result["sources"]) > 0

@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     openrouter_api_key: str
     bai_api_key: str
 
-    chat_model: str = "mimo-v2.5"
+    chat_model: str = "openai/gpt-4o-mini"
     embed_model: str = "nvidia/nemotron-3-embed-1b:free"
 
     chroma_path: str = "./chroma_db"
