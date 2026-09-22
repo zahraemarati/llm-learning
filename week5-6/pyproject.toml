@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "llm-week5-agent"
+version = "0.1.0"
+requires-python = ">=3.10"
+
+dependencies = [
+    "langchain",
+    "langchain-openai",
+    "openai",
+    "pydantic-settings",
+    "pypdf",
+    "ddgs",
+    "chromadb",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+
+[tool.setuptools]
+packages = ["agents", "tools"]
+py-modules = ["config", "llm_client"]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
