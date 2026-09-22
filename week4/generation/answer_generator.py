@@ -1,5 +1,4 @@
 from llm_client import chat_client
-from config import settings
 
 
 def generate_answer(
@@ -20,10 +19,12 @@ Rules:
    "I couldn't find this information in the document."
 
 Context:
+
 {context_text}
 
 
 Question:
+
 {question}
 
 
@@ -31,16 +32,9 @@ Answer:
 """
 
 
-    response = chat_client.chat.completions.create(
-        model=settings.chat_model,
-
-        messages=[
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
+    response = chat_client.invoke(
+        prompt
     )
 
 
-    return response.choices[0].message.content
+    return response.content

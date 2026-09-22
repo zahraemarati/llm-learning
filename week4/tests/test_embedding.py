@@ -1,11 +1,14 @@
 from embeddings.embedder import get_embedding
 
 
-text = "Python is a programming language"
+def test_embedding():
 
+    text = "Artificial intelligence is changing technology."
 
-vector = get_embedding(text)
+    vector = get_embedding(text)
 
+    assert vector
 
-print("Vector size:", len(vector))
-print(vector[:5])
+    assert isinstance(vector, list)
+
+    assert len(vector) > 0

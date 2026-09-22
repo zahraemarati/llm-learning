@@ -1,5 +1,5 @@
 from langchain_openai import ChatOpenAI
-from langchain_openai import OpenAIEmbeddings
+from openai import OpenAI
 
 from config import settings
 
@@ -12,12 +12,10 @@ chat_client = ChatOpenAI(
 )
 
 
-embedding_client = OpenAIEmbeddings(
-    model=settings.embed_model,
+embedding_client = OpenAI(
     api_key=settings.openrouter_api_key,
     base_url="https://openrouter.ai/api/v1",
 )
 
 
-# backward compatibility
 model = chat_client

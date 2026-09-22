@@ -1,28 +1,25 @@
 from llm_client import chat_client
-from config import settings
 
 
 class QueryRewriter:
 
-    def rewrite(self, question: str) -> str:
+    def rewrite(self, query: str) -> str:
 
-        response = chat_client.chat.completions.create(
-            model=settings.chat_model,
-            messages=[
-                {
-                    "role": "user",
-                    "content": f"""
-Rewrite the user question into a better search query.
+        prompt = f"""
+You are a query rewriting assistant.
 
-The query will be used for document retrieval.
+Rewrite the following user query so that it is
+clearer and more suitable for document retrieval.
 
-Return only the improved search query.
+Return only the rewritten query.
+Do not add explanations.
 
-Question:
-{question}
+User Query:
+{query}
+
+Rewritten Query:
 """
-                }
-            ],
-        )
 
-        return response.choices[0].message.content.strip()
+        response = chat_client.invoke(prompt)
+
+        return response.content.strip()
