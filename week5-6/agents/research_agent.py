@@ -6,6 +6,7 @@ from tools.pdf_reader import pdf_reader
 from tools.web_search import web_search
 from tools.rag_tool import rag_search
 
+
 tools = [
     calculator,
     pdf_reader,
@@ -25,8 +26,14 @@ def build_messages(user_input: str):
     return [
         SystemMessage(
             content=(
-                "You are a helpful assistant. "
-                "Use the available tools when needed."
+                "You are a research assistant. "
+                "Use rag_search whenever the user's question depends on "
+                "uploaded or indexed documents. "
+                "When the user mentions a filename such as paper.pdf, "
+                "pass that filename in the source argument. "
+                "Use pdf_reader only when the user explicitly asks to read "
+                "a PDF file directly from a file path. "
+                "Use web_search for current public information."
             )
         ),
         HumanMessage(content=user_input),
@@ -38,7 +45,10 @@ def decide(user_input: str):
     return model_with_tools.invoke(messages)
 
 
-def run_agent(user_input: str, verbose: bool = True) -> str:
+def run_agent(
+    user_input: str,
+    verbose: bool = True,
+) -> str:
     messages = build_messages(user_input)
 
     max_steps = 5
@@ -62,7 +72,9 @@ def run_agent(user_input: str, verbose: bool = True) -> str:
 
             selected_tool = tools_by_name[tool_name]
 
-            result = selected_tool.invoke(tool_args)
+            result = selected_tool.invoke(
+                tool_args
+            )
 
             if verbose:
                 print(f"Observation: {result}")
@@ -74,4 +86,6 @@ def run_agent(user_input: str, verbose: bool = True) -> str:
                 )
             )
 
-    raise RuntimeError("Agent exceeded maximum number of steps.")
+    raise RuntimeError(
+        "Agent exceeded maximum number of steps."
+    )

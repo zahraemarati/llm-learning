@@ -23,3 +23,5 @@ uploads/
 *.egg-info/
 build/
 dist/
+
+.commandcode/
