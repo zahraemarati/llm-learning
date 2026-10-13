@@ -1,12 +1,29 @@
-from agents.research_agent import run_agent
+from agents.research_agent import clear_memory, run_agent
 
 
 def main():
-    user_input = input("You: ")
+    clear_memory()
 
-    answer = run_agent(user_input)
+    print("Chat started. Type 'exit' to quit.")
 
-    print(f"\nAssistant: {answer}")
+    while True:
+        user_input = input("\nYou: ").strip()
+
+        if user_input.lower() in {
+            "exit",
+            "quit",
+        }:
+            break
+
+        if not user_input:
+            continue
+
+        answer = run_agent(
+            user_input,
+            verbose=True,
+        )
+
+        print(f"\nAssistant: {answer}")
 
 
 if __name__ == "__main__":
