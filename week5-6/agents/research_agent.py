@@ -75,6 +75,7 @@ def decide(
 def run_agent(
     user_input: str,
     verbose: bool = True,
+    save_memory: bool = True,
 ) -> str:
     messages = build_messages(
         user_input
@@ -92,10 +93,11 @@ def run_agent(
         if not response.tool_calls:
             final_answer = response.content
 
-            context_manager.update_memory(
-                user_input=user_input,
-                assistant_output=final_answer,
-            )
+            if save_memory:
+                context_manager.update_memory(
+                    user_input=user_input,
+                    assistant_output=final_answer,
+                )
 
             return final_answer
 
