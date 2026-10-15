@@ -1,5 +1,10 @@
-from agents.base_agent import AgentConfig, BaseAgent
-from agents.prompts import REVIEWER_AGENT_PROMPT
+from agents.base_agent import (
+    AgentConfig,
+    BaseAgent,
+)
+from agents.prompts import (
+    REVIEWER_AGENT_PROMPT,
+)
 
 
 class ReviewerAgent(BaseAgent):
@@ -21,14 +26,19 @@ class ReviewerAgent(BaseAgent):
     def review(
         self,
         task: str,
+        research_notes: str,
         draft: str,
         verbose: bool = True,
     ) -> str:
         instruction = (
             f"Original task:\n{task}\n\n"
+            f"Research notes:\n{research_notes}\n\n"
             f"Draft:\n{draft}\n\n"
-            "Review this draft and provide concrete feedback "
-            "for the writer agent."
+            "Review the draft against both the original "
+            "task and the research notes. "
+            "Check correctness, relevance, completeness, "
+            "clarity, structure, and unsupported claims. "
+            "Return concrete feedback for the writer."
         )
 
         return self.run(

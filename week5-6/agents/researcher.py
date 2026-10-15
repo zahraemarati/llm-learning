@@ -1,5 +1,10 @@
-from agents.base_agent import AgentConfig, BaseAgent
-from agents.prompts import RESEARCHER_AGENT_PROMPT
+from agents.base_agent import (
+    AgentConfig,
+    BaseAgent,
+)
+from agents.prompts import (
+    RESEARCHER_AGENT_PROMPT,
+)
 from tools.pdf_reader import pdf_reader
 from tools.rag_tool import rag_search
 from tools.web_search import web_search
@@ -37,8 +42,10 @@ class ResearcherAgent(BaseAgent):
     ) -> str:
         instruction = (
             f"Original task:\n{task}\n\n"
-            "Gather the information needed to complete this task. "
-            "Return research notes for the writer agent."
+            "Gather the information needed to complete "
+            "the original task. "
+            "Return clear research notes for the writer. "
+            "Do not write the final answer."
         )
 
         return self.run(

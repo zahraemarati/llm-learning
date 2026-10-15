@@ -17,8 +17,9 @@ class FakeResearcher:
 
 class FakeWriter:
     def __init__(self):
-        self.draft_task = None
         self.draft_research = None
+        self.revision_research = None
+        self.revision_draft = None
         self.revision_review = None
 
     def create_draft(
@@ -27,7 +28,6 @@ class FakeWriter:
         research_notes: str,
         verbose: bool = True,
     ) -> str:
-        self.draft_task = task
         self.draft_research = research_notes
 
         return "Initial report draft."
@@ -35,10 +35,13 @@ class FakeWriter:
     def revise(
         self,
         task: str,
+        research_notes: str,
         draft: str,
         review: str,
         verbose: bool = True,
     ) -> str:
+        self.revision_research = research_notes
+        self.revision_draft = draft
         self.revision_review = review
 
         return "Improved final report."
@@ -46,14 +49,17 @@ class FakeWriter:
 
 class FakeReviewer:
     def __init__(self):
+        self.received_research = None
         self.received_draft = None
 
     def review(
         self,
         task: str,
+        research_notes: str,
         draft: str,
         verbose: bool = True,
     ) -> str:
+        self.received_research = research_notes
         self.received_draft = draft
 
         return "Improve structure and clarity."
@@ -70,7 +76,7 @@ def test_manager_delegates_between_agents():
         reviewer=reviewer,
     )
 
-    result = manager.execute(
+    state = manager.execute(
         "Write a report about paper.pdf",
         verbose=False,
     )
@@ -83,7 +89,19 @@ def test_manager_delegates_between_agents():
         "Research notes about the paper."
     )
 
+    assert reviewer.received_research == (
+        "Research notes about the paper."
+    )
+
     assert reviewer.received_draft == (
+        "Initial report draft."
+    )
+
+    assert writer.revision_research == (
+        "Research notes about the paper."
+    )
+
+    assert writer.revision_draft == (
         "Initial report draft."
     )
 
@@ -91,9 +109,11 @@ def test_manager_delegates_between_agents():
         "Improve structure and clarity."
     )
 
-    assert result.final_answer == (
+    assert state.final_answer == (
         "Improved final report."
     )
+
+    assert state.success is True
 
 
 def test_manager_returns_final_answer():
