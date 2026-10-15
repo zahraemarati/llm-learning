@@ -2,7 +2,11 @@ from agents.manager import ManagerAgent
 
 
 class FakeResearcher:
-    def __init__(self):
+    def __init__(
+        self,
+        should_fail: bool = False,
+    ):
+        self.should_fail = should_fail
         self.received_task = None
 
     def research(
@@ -12,15 +16,21 @@ class FakeResearcher:
     ) -> str:
         self.received_task = task
 
-        return "Research notes about the paper."
+        if self.should_fail:
+            raise RuntimeError(
+                "Research failed"
+            )
+
+        return (
+            "Research notes about the paper."
+        )
 
 
 class FakeWriter:
     def __init__(self):
-        self.draft_research = None
-        self.revision_research = None
-        self.revision_draft = None
-        self.revision_review = None
+        self.received_research = None
+        self.received_draft = None
+        self.received_review = None
 
     def create_draft(
         self,
@@ -28,9 +38,13 @@ class FakeWriter:
         research_notes: str,
         verbose: bool = True,
     ) -> str:
-        self.draft_research = research_notes
+        self.received_research = (
+            research_notes
+        )
 
-        return "Initial report draft."
+        return (
+            "Initial report draft."
+        )
 
     def revise(
         self,
@@ -40,11 +54,12 @@ class FakeWriter:
         review: str,
         verbose: bool = True,
     ) -> str:
-        self.revision_research = research_notes
-        self.revision_draft = draft
-        self.revision_review = review
+        self.received_draft = draft
+        self.received_review = review
 
-        return "Improved final report."
+        return (
+            "Improved final report."
+        )
 
 
 class FakeReviewer:
@@ -59,13 +74,18 @@ class FakeReviewer:
         draft: str,
         verbose: bool = True,
     ) -> str:
-        self.received_research = research_notes
+        self.received_research = (
+            research_notes
+        )
+
         self.received_draft = draft
 
-        return "Improve structure and clarity."
+        return (
+            "Improve structure and clarity."
+        )
 
 
-def test_manager_delegates_between_agents():
+def test_multi_agent_communication():
     researcher = FakeResearcher()
     writer = FakeWriter()
     reviewer = FakeReviewer()
@@ -85,7 +105,7 @@ def test_manager_delegates_between_agents():
         "Write a report about paper.pdf"
     )
 
-    assert writer.draft_research == (
+    assert writer.received_research == (
         "Research notes about the paper."
     )
 
@@ -97,15 +117,11 @@ def test_manager_delegates_between_agents():
         "Initial report draft."
     )
 
-    assert writer.revision_research == (
-        "Research notes about the paper."
-    )
-
-    assert writer.revision_draft == (
+    assert writer.received_draft == (
         "Initial report draft."
     )
 
-    assert writer.revision_review == (
+    assert writer.received_review == (
         "Improve structure and clarity."
     )
 
@@ -113,21 +129,93 @@ def test_manager_delegates_between_agents():
         "Improved final report."
     )
 
-    assert state.success is True
 
-
-def test_manager_returns_final_answer():
+def test_multi_agent_state():
     manager = ManagerAgent(
         researcher=FakeResearcher(),
         writer=FakeWriter(),
         reviewer=FakeReviewer(),
     )
 
-    result = manager.run(
+    state = manager.execute(
         "Write a report about paper.pdf",
         verbose=False,
     )
 
-    assert result == (
+    assert state.success is True
+
+    assert state.current_stage == (
+        "completed"
+    )
+
+    assert state.completed_stages == [
+        "research",
+        "writing",
+        "review",
+        "revision",
+    ]
+
+    assert state.research_notes == (
+        "Research notes about the paper."
+    )
+
+    assert state.draft == (
+        "Initial report draft."
+    )
+
+    assert state.review == (
+        "Improve structure and clarity."
+    )
+
+    assert state.final_answer == (
+        "Improved final report."
+    )
+
+
+def test_multi_agent_error_handling():
+    manager = ManagerAgent(
+        researcher=FakeResearcher(
+            should_fail=True
+        ),
+        writer=FakeWriter(),
+        reviewer=FakeReviewer(),
+    )
+
+    state = manager.execute(
+        "Write a report about paper.pdf",
+        verbose=False,
+    )
+
+    assert state.success is False
+
+    assert state.current_stage == (
+        "failed"
+    )
+
+    assert len(state.errors) == 1
+
+    assert (
+        "Research failed"
+        in state.errors[0]
+    )
+
+    assert state.draft == ""
+    assert state.review == ""
+    assert state.final_answer == ""
+
+
+def test_multi_agent_returns_final_answer():
+    manager = ManagerAgent(
+        researcher=FakeResearcher(),
+        writer=FakeWriter(),
+        reviewer=FakeReviewer(),
+    )
+
+    answer = manager.run(
+        "Write a report about paper.pdf",
+        verbose=False,
+    )
+
+    assert answer == (
         "Improved final report."
     )
